@@ -1,3 +1,10 @@
 spring:
   application:
     name: fit_app
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fit_app
+    username: fit_app
+    password: fit_app
+  jpa:
+    hibernate:
+      ddl-auto: update

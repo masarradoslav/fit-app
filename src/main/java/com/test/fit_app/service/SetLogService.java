@@ -48,7 +48,15 @@ public class SetLogService {
     public void deleteSet(int sessionId, int workoutSessionExerciseId, int setLogId) {
         getSessionExerciseOrThrow(sessionId, workoutSessionExerciseId);
         SetLog setLog = getSetLogOrThrow(workoutSessionExerciseId, setLogId);
+        int deletedIndex = setLog.getSetIndex();
         setLogRepository.delete(setLog);
+
+        for (SetLog laterSet :
+                setLogRepository.findByWorkoutSessionExerciseIdOrderBySetIndexAsc(workoutSessionExerciseId)) {
+            if (laterSet.getSetIndex() > deletedIndex) {
+                laterSet.setSetIndex(laterSet.getSetIndex() - 1);
+            }
+        }
     }
 
     private WorkoutSessionExercise getSessionExerciseOrThrow(int sessionId, int workoutSessionExerciseId) {

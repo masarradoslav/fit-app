@@ -1,13 +1,16 @@
 package com.test.fit_app.controller;
 
+import com.test.fit_app.dto.ExerciseComparisonResponse;
 import com.test.fit_app.dto.WorkoutSessionExerciseRequest;
 import com.test.fit_app.dto.WorkoutSessionExerciseResponse;
 import com.test.fit_app.service.WorkoutSessionExerciseService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,5 +36,16 @@ public class WorkoutSessionExerciseController {
             @PathVariable int sessionId, @PathVariable int workoutSessionExerciseId) {
         workoutSessionExerciseService.removeExercise(sessionId, workoutSessionExerciseId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{workoutSessionExerciseId}/comparison")
+    public ResponseEntity<ExerciseComparisonResponse> compareWithPrevious(
+            @PathVariable int sessionId, @PathVariable int workoutSessionExerciseId) {
+        return ResponseEntity.ok(workoutSessionExerciseService.compareWithPrevious(sessionId, workoutSessionExerciseId));
+    }
+
+    @GetMapping("/comparison")
+    public ResponseEntity<List<ExerciseComparisonResponse>> compareSessionWithPrevious(@PathVariable int sessionId) {
+        return ResponseEntity.ok(workoutSessionExerciseService.compareSessionWithPrevious(sessionId));
     }
 }

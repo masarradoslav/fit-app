@@ -19,7 +19,8 @@ import com.test.fit_app.model.enums.Muscle;
 import com.test.fit_app.model.enums.Musclegroups;
 import com.test.fit_app.repository.SetLogRepository;
 import com.test.fit_app.repository.WorkoutSessionExerciseRepository;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,7 +41,7 @@ class SetLogServiceTest {
     private SetLogService setLogService;
 
     private WorkoutSessionExercise sessionExercise() {
-        WorkoutSession session = new WorkoutSession(1, "Push Day", LocalDate.of(2026, 8, 8));
+        WorkoutSession session = new WorkoutSession(1, "Push Day", LocalDateTime.of(2026, 8, 8, 10, 0));
         Exercise benchPress = new Exercise(2, "Bench Press", Musclegroups.CHEST, Muscle.UPPER_CHEST);
         return new WorkoutSessionExercise(10, session, benchPress, 0);
     }
@@ -111,10 +112,32 @@ class SetLogServiceTest {
         when(workoutSessionExerciseRepository.findByIdAndWorkoutSessionId(10, 1))
                 .thenReturn(Optional.of(sessionExercise));
         when(setLogRepository.findByIdAndWorkoutSessionExerciseId(100, 10)).thenReturn(Optional.of(existing));
+        when(setLogRepository.findByWorkoutSessionExerciseIdOrderBySetIndexAsc(10))
+                .thenReturn(List.of());
 
         setLogService.deleteSet(1, 10, 100);
 
         verify(setLogRepository).delete(existing);
+    }
+
+    @Test
+    void deleteSet_shouldRenumberLaterSets_soNextAddedSetDoesNotCollide() {
+        WorkoutSessionExercise sessionExercise = sessionExercise();
+        SetLog set1 = new SetLog(100, sessionExercise, 1, 8, 60.0);
+        SetLog set2 = new SetLog(101, sessionExercise, 2, 8, 60.0);
+        SetLog set3 = new SetLog(102, sessionExercise, 3, 8, 60.0);
+
+        when(workoutSessionExerciseRepository.findByIdAndWorkoutSessionId(10, 1))
+                .thenReturn(Optional.of(sessionExercise));
+        when(setLogRepository.findByIdAndWorkoutSessionExerciseId(101, 10)).thenReturn(Optional.of(set2));
+        when(setLogRepository.findByWorkoutSessionExerciseIdOrderBySetIndexAsc(10))
+                .thenReturn(List.of(set1, set3));
+
+        setLogService.deleteSet(1, 10, 101);
+
+        verify(setLogRepository).delete(set2);
+        assertThat(set1.getSetIndex()).isEqualTo(1);
+        assertThat(set3.getSetIndex()).isEqualTo(2);
     }
 
     @Test

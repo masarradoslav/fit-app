@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: fit_app
+      POSTGRES_USER: fit_app
+      POSTGRES_PASSWORD: fit_app
+    ports:
+      - "5432:5432"
+    volumes:
+      - fit_app_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  fit_app_postgres_data:

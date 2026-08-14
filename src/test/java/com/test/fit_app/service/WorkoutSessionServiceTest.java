@@ -18,7 +18,7 @@ import com.test.fit_app.model.enums.Musclegroups;
 import com.test.fit_app.repository.SetLogRepository;
 import com.test.fit_app.repository.WorkoutSessionExerciseRepository;
 import com.test.fit_app.repository.WorkoutSessionRepository;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@ class WorkoutSessionServiceTest {
 
     @Test
     void create_shouldSaveSessionAndReturnMappedResponse() {
-        LocalDate date = LocalDate.of(2026, 8, 8);
+        LocalDateTime date = LocalDateTime.of(2026, 8, 8, 10, 0);
         WorkoutSessionRequest request = new WorkoutSessionRequest("Push Day", date);
         WorkoutSession saved = new WorkoutSession(1, "Push Day", date);
         when(workoutSessionRepository.save(any(WorkoutSession.class))).thenReturn(saved);
@@ -61,7 +61,7 @@ class WorkoutSessionServiceTest {
 
     @Test
     void findById_shouldReturnMappedResponseWithNestedExercisesAndSets_whenSessionExists() {
-        LocalDate date = LocalDate.of(2026, 8, 8);
+        LocalDateTime date = LocalDateTime.of(2026, 8, 8, 10, 0);
         WorkoutSession session = new WorkoutSession(1, "Push Day", date);
         Exercise benchPress = new Exercise(2, "Bench Press", Musclegroups.CHEST, Muscle.UPPER_CHEST);
         WorkoutSessionExercise sessionExercise = new WorkoutSessionExercise(10, session, benchPress, 0);
@@ -105,8 +105,8 @@ class WorkoutSessionServiceTest {
 
     @Test
     void update_shouldUpdateAndReturnMappedResponse_whenSessionExists() {
-        LocalDate oldDate = LocalDate.of(2026, 8, 8);
-        LocalDate newDate = LocalDate.of(2026, 8, 9);
+        LocalDateTime oldDate = LocalDateTime.of(2026, 8, 8, 10, 0);
+        LocalDateTime newDate = LocalDateTime.of(2026, 8, 9, 10, 0);
         WorkoutSession existing = new WorkoutSession(1, "Push Day", oldDate);
         WorkoutSessionRequest request = new WorkoutSessionRequest("Pull Day", newDate);
         when(workoutSessionRepository.findById(1)).thenReturn(Optional.of(existing));
@@ -122,7 +122,7 @@ class WorkoutSessionServiceTest {
 
     @Test
     void update_shouldThrowWorkoutSessionNotFoundException_whenSessionDoesNotExist() {
-        WorkoutSessionRequest request = new WorkoutSessionRequest("Pull Day", LocalDate.of(2026, 8, 9));
+        WorkoutSessionRequest request = new WorkoutSessionRequest("Pull Day", LocalDateTime.of(2026, 8, 9, 10, 0));
         when(workoutSessionRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> workoutSessionService.update(99, request))
@@ -131,7 +131,7 @@ class WorkoutSessionServiceTest {
 
     @Test
     void delete_shouldCascadeDeleteExercisesAndSetLogs_whenSessionExists() {
-        WorkoutSession session = new WorkoutSession(1, "Push Day", LocalDate.of(2026, 8, 8));
+        WorkoutSession session = new WorkoutSession(1, "Push Day", LocalDateTime.of(2026, 8, 8, 10, 0));
         Exercise benchPress = new Exercise(2, "Bench Press", Musclegroups.CHEST, Muscle.UPPER_CHEST);
         WorkoutSessionExercise sessionExercise = new WorkoutSessionExercise(10, session, benchPress, 0);
         SetLog setLog = new SetLog(100, sessionExercise, 1, 8, 60.0);

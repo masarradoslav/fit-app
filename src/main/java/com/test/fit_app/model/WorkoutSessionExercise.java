@@ -36,7 +36,6 @@ public class WorkoutSessionExercise {
     @JoinColumn(name = "exercise_id")
     private Exercise exercise;
 
-    // Position within the session (0-based, in add order). Named "position"
-    // rather than "order" since ORDER is a SQL keyword.
+    // position within session
     private int position;
 }

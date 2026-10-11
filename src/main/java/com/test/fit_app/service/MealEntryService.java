@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,10 +40,12 @@ public class MealEntryService {
         return toResponse(mealEntryRepository.save(entry));
     }
 
+    @Transactional(readOnly = true)
     public MealEntryResponse findById(int id) {
         return toResponse(getMealEntryOrThrow(id));
     }
 
+    @Transactional(readOnly = true)
     public List<MealEntryResponse> findAll(LocalDate date) {
         List<MealEntry> entries = date != null ? findByDate(date) : mealEntryRepository.findAll();
         return entries.stream().map(this::toResponse).toList();
@@ -65,6 +68,7 @@ public class MealEntryService {
         mealEntryRepository.delete(entry);
     }
 
+    @Transactional(readOnly = true)
     public DailyNutritionSummaryResponse getDailySummary(LocalDate date) {
         List<MealEntry> entries = findByDate(date);
 

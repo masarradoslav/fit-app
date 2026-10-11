@@ -30,8 +30,7 @@ public class Exercise {
 
     private String name;
 
-    // Stored as STRING rather than the default ORDINAL so reordering/adding
-    // enum constants later doesn't silently corrupt existing rows.
+    // stored as STRING rather than default ORDINAL so reordering/adding enum fields doesnt corrupt existing rows
     @Enumerated(EnumType.STRING)
     private Musclegroups muscleGroup;
 

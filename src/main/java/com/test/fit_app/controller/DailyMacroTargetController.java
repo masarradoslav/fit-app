@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-// Singleton resource: there is only ever one daily macro target, so this
-// exposes get-current/replace rather than full collection CRUD.
 @RestController
 @RequestMapping("/api/daily-macro-target")
 @RequiredArgsConstructor

@@ -40,8 +40,7 @@ public class PersonalRecordController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PersonalRecordResponse> update(
-            @PathVariable int id, @Valid @RequestBody PersonalRecordRequest request) {
+    public ResponseEntity<PersonalRecordResponse> update(@PathVariable int id, @Valid @RequestBody PersonalRecordRequest request) {
         return ResponseEntity.ok(personalRecordService.update(id, request));
     }
 

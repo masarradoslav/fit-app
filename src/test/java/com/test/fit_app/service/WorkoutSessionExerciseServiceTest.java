@@ -65,8 +65,7 @@ class WorkoutSessionExerciseServiceTest {
         when(workoutSessionExerciseRepository.save(any(WorkoutSessionExercise.class))).thenReturn(saved);
         when(setLogRepository.findByWorkoutSessionExerciseIdOrderBySetIndexAsc(10)).thenReturn(List.of());
 
-        WorkoutSessionExerciseResponse response =
-                workoutSessionExerciseService.addExercise(1, new WorkoutSessionExerciseRequest(2));
+        WorkoutSessionExerciseResponse response = workoutSessionExerciseService.addExercise(1, new WorkoutSessionExerciseRequest(2));
 
         assertThat(response.getId()).isEqualTo(10);
         assertThat(response.getExerciseId()).isEqualTo(2);

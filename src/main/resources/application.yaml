@@ -6,5 +6,6 @@ spring:
     username: fit_app
     password: fit_app
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: update

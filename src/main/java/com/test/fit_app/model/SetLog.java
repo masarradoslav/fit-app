@@ -30,7 +30,7 @@ public class SetLog {
     @JoinColumn(name = "workout_session_exercise_id")
     private WorkoutSessionExercise workoutSessionExercise;
 
-    // 1st, 2nd, 3rd... set of this exercise within this session.
+    // set of this exercise within this session.
     private int setIndex;
 
     private int reps;

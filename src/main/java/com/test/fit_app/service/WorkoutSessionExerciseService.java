@@ -73,8 +73,7 @@ public class WorkoutSessionExerciseService {
     public ExerciseComparisonResponse compareWithPrevious(int sessionId, int workoutSessionExerciseId) {
         WorkoutSessionExercise sessionExercise = getOrThrow(sessionId, workoutSessionExerciseId);
         Exercise exercise = sessionExercise.getExercise();
-        List<SetLog> currentSets =
-                setLogRepository.findByWorkoutSessionExerciseIdOrderBySetIndexAsc(workoutSessionExerciseId);
+        List<SetLog> currentSets = setLogRepository.findByWorkoutSessionExerciseIdOrderBySetIndexAsc(workoutSessionExerciseId);
 
         Optional<WorkoutSessionExercise> previousSessionExercise = workoutSessionExerciseRepository
                 .findFirstByExercise_IdAndWorkoutSession_DateLessThanOrderByWorkoutSession_DateDescIdDesc(
@@ -104,8 +103,7 @@ public class WorkoutSessionExerciseService {
                 status = SetComparisonStatus.MISSING_SET;
             }
 
-            sets.add(new SetComparisonResponse(
-                    i + 1, toSetLogResponse(current), toSetLogResponse(previous), weightDelta, repsDelta, status));
+            sets.add(new SetComparisonResponse(i + 1, toSetLogResponse(current), toSetLogResponse(previous), weightDelta, repsDelta, status));
         }
 
         return new ExerciseComparisonResponse(

@@ -9,10 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * The user's daily macro goals, used to compare against actual intake
- * logged via {@link MealEntry}. There is only ever one row.
- */
 @Entity
 @Getter
 @Setter

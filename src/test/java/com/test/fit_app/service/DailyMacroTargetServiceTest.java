@@ -46,8 +46,7 @@ class DailyMacroTargetServiceTest {
     void getCurrent_shouldThrowDailyMacroTargetNotFoundException_whenNoneExists() {
         when(dailyMacroTargetRepository.findFirstByOrderByIdAsc()).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> dailyMacroTargetService.getCurrent())
-                .isInstanceOf(DailyMacroTargetNotFoundException.class);
+        assertThatThrownBy(() -> dailyMacroTargetService.getCurrent()).isInstanceOf(DailyMacroTargetNotFoundException.class);
     }
 
     @Test
